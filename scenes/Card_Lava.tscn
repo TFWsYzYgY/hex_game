@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/Card.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/Cards/Card_Lava.gd" type="Script" id=2]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Fire.png" type="Texture" id=3]
+
+
+
+[node  name="Card_Lava" instance=ExtResource(1)]
+
+script=ExtResource(2)
+name="Lava"
+units=6
+
+[node  name="Bild" parent="."]
+
+texture=ExtResource(3)

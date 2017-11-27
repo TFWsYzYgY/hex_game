@@ -1,0 +1,65 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/Cards/Card_Blank.gd" type="Script" id=1]
+
+[sub_resource type="ConvexPolygonShape2D" id=1]
+
+custom_solver_bias = 0.0
+points = PoolVector2Array( 0, -64, 55, -32, 55, 32, 0, 64, -55, 32, -55, -32 )
+
+[node name="Card_Blank" type="Area2D"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 1 )
+name = "Blank"
+units = null
+
+[node name="Bild" type="Sprite" parent="."]
+
+_sections_unfolded = [ "Pause" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+shape = SubResource( 1 )
+
+[node name="Panel" type="Panel" parent="."]
+
+visible = false
+margin_left = -10.0
+margin_top = -9.0
+margin_right = 15.0
+margin_bottom = 25.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label_units" type="Label" parent="Panel"]
+
+visible = false
+margin_right = 24.0
+margin_bottom = 33.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[connection signal="input_event" from="." to="." method="_on_Card_Blank_input_event"]
+
+

@@ -1,0 +1,560 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://scripts/Grid.gd" type="Script" id=1]
+[ext_resource path="res://scenes/Card_Blank.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/camera.gd" type="Script" id=3]
+[ext_resource path="res://scripts/HUD.gd" type="Script" id=4]
+[ext_resource path="res://scripts/label_gather.gd" type="Script" id=5]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Fire.png" type="Texture" id=6]
+[ext_resource path="res://scripts/CardBttns/Lava.gd" type="Script" id=7]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Grass.png" type="Texture" id=8]
+[ext_resource path="res://scripts/CardBttns/Grass.gd" type="Script" id=9]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Forest.png" type="Texture" id=10]
+[ext_resource path="res://scripts/CardBttns/Forest.gd" type="Script" id=11]
+[ext_resource path="res://assets/images/Hexagon_Tiles/ForestPath.png" type="Texture" id=12]
+[ext_resource path="res://scripts/CardBttns/Road.gd" type="Script" id=13]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Mountain.png" type="Texture" id=14]
+[ext_resource path="res://scripts/CardBttns/Stones.gd" type="Script" id=15]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Water.png" type="Texture" id=16]
+[ext_resource path="res://scripts/CardBttns/Water.gd" type="Script" id=17]
+[ext_resource path="res://assets/images/Hexagon_Tiles/SandQuick.png" type="Texture" id=18]
+[ext_resource path="res://scripts/CardBttns/Haunted.gd" type="Script" id=19]
+[ext_resource path="res://assets/images/background.png" type="Texture" id=20]
+
+[node name="main" type="Node2D"]
+
+script = ExtResource( 1 )
+card = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 1, 1 )
+limit_left = -10000000
+limit_top = -10000000
+limit_right = 10000000
+limit_bottom = 10000000
+limit_smoothed = false
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = false
+smoothing_speed = 5.0
+drag_margin_left = 0.2
+drag_margin_top = 0.2
+drag_margin_right = 0.2
+drag_margin_bottom = 0.2
+editor_draw_screen = true
+editor_draw_limits = false
+editor_draw_drag_margin = false
+script = ExtResource( 3 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+script = ExtResource( 4 )
+
+[node name="gather" type="Label" parent="CanvasLayer"]
+
+margin_left = 915.0
+margin_top = 333.0
+margin_right = 923.0
+margin_bottom = 347.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "0"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+script = ExtResource( 5 )
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer"]
+
+anchor_right = 1
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal = true
+scroll_vertical = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ScrollContainer"]
+
+margin_right = 1024.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+
+[node name="Bttn_Lava" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+"butt",
+]]
+
+margin_right = 142.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 6 )
+script = ExtResource( 7 )
+_sections_unfolded = [ "Rect", "Textures" ]
+
+[node name="Bttn_Grass" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+"butt",
+]]
+
+margin_left = 146.0
+margin_right = 288.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 8 )
+script = ExtResource( 9 )
+
+[node name="Bttn_Forest" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+"butt",
+]]
+
+margin_left = 292.0
+margin_right = 434.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 10 )
+script = ExtResource( 11 )
+
+[node name="Bttn_Road" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+"butt",
+]]
+
+margin_left = 438.0
+margin_right = 580.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 12 )
+script = ExtResource( 13 )
+
+[node name="Bttn_Stones" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+"butt",
+]]
+
+margin_left = 584.0
+margin_right = 726.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 14 )
+script = ExtResource( 15 )
+
+[node name="Bttn_Water" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+"butt",
+]]
+
+margin_left = 730.0
+margin_right = 872.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 16 )
+script = ExtResource( 17 )
+
+[node name="Bttn_Template" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+"butt",
+]]
+
+margin_left = 876.0
+margin_right = 1024.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 18 )
+script = ExtResource( 19 )
+
+[node name="Panel_score" type="Panel" parent="CanvasLayer"]
+
+anchor_top = 1
+anchor_right = 1
+anchor_bottom = 1
+margin_top = 100.0
+margin_bottom = -3.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel_score"]
+
+anchor_top = 1
+anchor_right = 1
+anchor_bottom = 1
+margin_top = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+
+[node name="bttn_pass" type="Button" parent="CanvasLayer/Panel_score/HBoxContainer"]
+
+margin_right = 201.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Pass Turn"
+flat = false
+
+[node name="vbox1" type="VBoxContainer" parent="CanvasLayer/Panel_score/HBoxContainer"]
+
+margin_left = 205.0
+margin_right = 406.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+
+[node name="Label_player1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
+
+margin_right = 201.0
+margin_bottom = 22.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "player1"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_lands1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
+
+margin_top = 26.0
+margin_right = 201.0
+margin_bottom = 48.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "available placements"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_moves1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
+
+margin_top = 52.0
+margin_right = 201.0
+margin_bottom = 74.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "available moves"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_actions1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
+
+margin_top = 78.0
+margin_right = 201.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "available total actions"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="vbox2" type="VBoxContainer" parent="CanvasLayer/Panel_score/HBoxContainer"]
+
+margin_left = 410.0
+margin_right = 611.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+
+[node name="Label_points1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
+
+margin_right = 201.0
+margin_bottom = 22.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_lands1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
+
+margin_top = 26.0
+margin_right = 201.0
+margin_bottom = 48.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_moves1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
+
+margin_top = 52.0
+margin_right = 201.0
+margin_bottom = 74.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_actions1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
+
+margin_top = 78.0
+margin_right = 201.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="vbox3" type="VBoxContainer" parent="CanvasLayer/Panel_score/HBoxContainer"]
+
+margin_left = 615.0
+margin_right = 816.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+
+[node name="Label_player2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
+
+margin_right = 201.0
+margin_bottom = 22.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "player2"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_lands2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
+
+margin_top = 26.0
+margin_right = 201.0
+margin_bottom = 48.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "available placements"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_moves2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
+
+margin_top = 52.0
+margin_right = 201.0
+margin_bottom = 74.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "available moves"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_actions2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
+
+margin_top = 78.0
+margin_right = 201.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "available total actions"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="vbox4" type="VBoxContainer" parent="CanvasLayer/Panel_score/HBoxContainer"]
+
+margin_left = 820.0
+margin_right = 1024.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+
+[node name="Label_points2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
+
+margin_right = 204.0
+margin_bottom = 22.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_lands2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
+
+margin_top = 26.0
+margin_right = 204.0
+margin_bottom = 48.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_moves2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
+
+margin_top = 52.0
+margin_right = 204.0
+margin_bottom = 74.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_actions2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
+
+margin_top = 78.0
+margin_right = 204.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="background" type="Sprite" parent="."]
+
+visible = false
+texture = ExtResource( 20 )
+_sections_unfolded = [ "Offset" ]
+
+[connection signal="pressed" from="CanvasLayer/Panel_score/HBoxContainer/bttn_pass" to="." method="_on_bttn_pass_pressed"]
+
+

@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/CardBttns/Lava.gd" type="Script" id=1]
+
+[node name="TextureButton" type="TextureButton" groups=[
+"bttn",
+]]
+
+margin_right = 142.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+script = ExtResource( 1 )
+_sections_unfolded = [ "Textures" ]
+
+
