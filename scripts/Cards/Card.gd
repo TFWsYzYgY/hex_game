@@ -74,7 +74,6 @@ func set_teamcolor():
 func entering(player):
 	owner = player
 	set_teamcolor()
-	get_parent().add_all_neighbors(get_ind())
 	
 func get_fast():
 	return fast

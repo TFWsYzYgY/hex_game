@@ -88,11 +88,17 @@ func _ready():
 func _get_active_player():
 	return active_player
 	
-#TODO: fix unique id/active_player
-func set_active_player(player):
-	active_player = player
-	is_active_player = (active_player+1 == get_tree().get_network_unique_id())
-	print("is this the active player: " + str(is_active_player))
+#redraw constantly
+func _process(delta):
+	get_node("CanvasLayer/gather").set_text(str(gather))
+	update()
+	
+#draw red hex for each neighbor/empty tiles
+func _draw():
+	var c = Color(1.0, 0.0, 0.0)
+	#for key in neighbors:
+	#	draw_Hex(ind_to_coord(key), c)
+	
 	
 #only 2 players-> switch between 0 and 1, take care of turnover
 sync func swap_active_player():
@@ -107,6 +113,12 @@ sync func swap_active_player():
 func get_random_card_from_deck():
 	var i = randi()%random_unified_deck.size()
 	return str(random_unified_deck[i])
+	
+func has_neighbour(ind):
+	for d in directions:
+		if ind + directions[d] in all_cards:
+			return true
+	return false
 	
 func draw_card_from_deck():
 	if is_active_player:
@@ -149,53 +161,59 @@ func coord_to_ind(pos):
 func ind_to_coord(pos):
 	return pos.x*v1 + pos.y*v2
 	
+func can_place(ind, card):
+	if card.get_name() == "Center":
+		return true
+	if land_plays[active_player] <= 0:
+		return false
+	if actions[active_player] <= 0:
+		return false
+	if not is_active_player:
+		return false
+	if card.get_overwrite():
+		if not ind in all_cards:
+			return false
+		if all_cards[ind].get_name() == "Center":
+			return false
+	else:
+		if ind in all_cards:
+			return false
+		return has_neighbour(ind)
+		
+	return true
 #adding card to map
 #flag -> player added card not init
 sync func add_card(ind, flag):
 	print("adding card at: ", str(ind))
 	print(flag)
 	
-	#free action available and active Player
-	if land_plays[active_player] > 0 and actions[active_player] > 0 and is_active_player:
+	if curr_card == null:
+		return
 		
-		#needs selected card
-		#TODO: should not be printed when gathering
-		if curr_card == null:
-			print("no card selected");
-			#no gather should be happening here bc add card only when blank card clicked
-		else:
-			var e = curr_card.instance()
-			#checking if place on map is available
-			#empty space + no overwrite
-			#occupied space + overwrite + not center
-			#TODO: incude that has to be  in neighbors if not overwrite
-			if ((not ind in all_cards and not e.get_overwrite()) or 
-					(ind in all_cards and e.get_overwrite() and not all_cards[ind].name == "Center")):
-				
-				if ind in all_cards:
-					all_cards[ind].queue_free()
-					all_cards.erase(ind)
-				#else:
-					#if flag:
-						#neighbors[ind].queue_free()
-						#neighbors.erase(ind)
-					
-				e.add_to_group("Karten")
-				add_child(e)
-				e.set_ind(ind)
-				all_cards[ind] = e
-				curr_card = null
-				all_cards[ind].connect("input_event", self, "_get_tooltip", [all_cards[ind]])
-				
-				#TODO: extra input for entering cards e.g. directions, etc.
-				e.entering(active_player)
-				
-				if flag:
-					actions[active_player] -= 1
-					land_plays[active_player] -= 1
-					rpc("update_label")
-			else:
-				print("unable to add card because ther is already a card and no overwrite!")
+	var e = curr_card.instance()
+	print(can_place(ind, e))
+	if can_place(ind, e):
+		
+			
+		if e.get_overwrite():
+			all_cards[ind].queue_free()
+			all_cards.erase(ind)
+			
+		e.add_to_group("Karten")
+		add_child(e)
+		e.set_ind(ind)
+		all_cards[ind] = e
+		curr_card = null
+		all_cards[ind].connect("input_event", self, "_get_tooltip", [all_cards[ind]])
+		
+		e.entering(active_player)
+		
+		if flag:
+			actions[active_player] -= 1
+			land_plays[active_player] -= 1
+			rpc("update_label")
+	else:
+		print("unable to place the card!")
 
 
 
@@ -204,31 +222,15 @@ func add_units_to_card(n, ind):
 		var k = all_cards[ind]
 		k.add_units(n, active_player)
 		
-func add_units_to_half_neighbours(n, ind):
+func add_units_half_circle(n, ind):
 	add_units_to_card(n, ind + directions["southwest"])	#links unten
 	add_units_to_card(n, ind + directions["southeast"])	#unten rechts
 	add_units_to_card(n, ind + directions["west"])	#links
 		
-func add_units_to_all_neighbours(n, ind):
+func add_units_circle(n, ind):
 	for d in directions:
 		add_units_to_card(n, ind + directions[d])
-	
-#func add_all_neighbors(ind):
-	#add_neighbor(ind + directions["west"])
-	#add_neighbor(ind + directions["southwest"])
-	#add_neighbor(ind + directions["northwest"])
-	#add_neighbor(ind + directions["east"])
-	#add_neighbor(ind + directions["northeast"])
-	#add_neighbor(ind + directions["southeast"])
 
-
-#func add_neighbor(ind):
-	#if not ind in neighbors and not ind in all_cards:
-		#var e = card.instance()
-		#e.add_to_group("Karten")
-		#add_child(e)
-		#e.set_ind(ind)
-		#neighbors[ind] = e
 	
 
 func _get_tooltip(viewport, event, shape_idx, card):
@@ -408,39 +410,61 @@ func _on_bttn_pass_pressed():
 	rpc("swap_active_player")
 	
 	
-
-	
-#needs fixing bc erases neighbors(red hexes) from existing tiles when moving in circle
-func erase_neighbors(ind):
-	print("erasing neighbors of: " + str(ind))
-	for d in directions:
-		if ind+directions[d] in neighbors and not hasNeighborCard(ind+directions[d]):
-			neighbors.erase(ind+directions[d])
-	
-	
-func hasNeighborCard(ind):
-	for d in directions:
-		if ind + directions[d] in all_cards:
-			print(" has cardneighbor")
-			return true
-	print("has no card as neighbor")
-	return false
-	
 #method for moving cards not swapping
 func move_card(ind, dir):
 	print("move card")
-	
-	erase_neighbors(ind)
-	
-	if ind+dir in neighbors:
-		neighbors.erase(ind+dir)
 	
 	var c = all_cards[ind]
 	all_cards.erase(ind)
 	c.set_ind(ind+dir)
 	all_cards[ind+dir] = c
-	add_all_neighbors(ind+dir)
+
+
+#method for entering cards
+#TODO: direction as input
+func move_cards_circle(ind):
+
+	var c = null
 	
+	#need a starting direction which is saved 
+	var v = ind+directions["east"]
+	#if v is a card move it to storage
+	if v in all_cards:
+		c = all_cards[v]
+		all_cards.erase(v)
+		
+	#rechts oben
+	v = ind + directions["northeast"]
+	if v in all_cards:
+		move_card(v, directions["southeast"])
+
+		
+	#links oben
+	v = ind + directions["northwest"]
+	if v in all_cards:
+		move_card(v, directions["east"])
+		
+	#links
+	v = ind + directions["west"]
+	if v in all_cards:
+		move_card(v, directions["northeast"])
+		
+	#links unten
+	v = ind + directions["southwest"]
+	if v in all_cards:
+		move_card(v, directions["northwest"])
+		
+	#rechts unten
+	v = ind + directions["southeast"]
+	if v in all_cards:
+		move_card(v, directions["west"])
+		
+	#rechts
+	if c != null:
+		v = ind + directions["southeast"]
+		c.set_ind(v)
+		all_cards[v] = c
+		
 	
 #method for entering cards
 #TODO: direction as input
@@ -449,7 +473,8 @@ func move_cards_line(ind):
 	if ind in all_cards:
 		move_cards_line(ind + directions["east"])
 		move_card(ind, directions["east"])
-		
+
+
 #method for entering cards
 #TODO: direction as input
 func push_last_tile_line(ind1):
@@ -459,62 +484,9 @@ func push_last_tile_line(ind1):
 	else:
 		move_card(ind1, directions["west"])
 
-#method for entering cards
-#TODO: direction as input
-func move_cards_circle(ind):
-	
-	var moved = []
-	var c = null
-	
-	#need a starting direction which is saved 
-	var v = ind+directions["east"]
-	#if v is a card move it to storage and delete the neighbours
-	if v in all_cards:
-		c = all_cards[v]
-		all_cards.erase(v)
-		erase_neighbors(v)
-		
-	#rechts oben
-	v = ind + directions["northeast"]
-	if v in all_cards:
-		move_card(v, directions["southeast"])
-		moved.append(v)
-		
-	#links oben
-	v = ind + directions["northwest"]
-	if v in all_cards:
-		move_card(v, directions["east"])
-		moved.append(v)
-		
-	#links
-	v = ind + directions["west"]
-	if v in all_cards:
-		move_card(v, directions["northeast"])
-		moved.append(v)
-		
-	#links unten
-	v = ind + directions["southwest"]
-	if v in all_cards:
-		move_card(v, directions["northwest"])
-		moved.append(v)
-		
-	#rechts unten
-	v = ind + directions["southeast"]
-	if v in all_cards:
-		move_card(v, directions["west"])
-		moved.append(v)
-		
-	#rechts
-	if c != null:
-		v = ind + directions["southeast"]
-		if v in neighbors:
-			neighbors.erase(v)
-		c.set_ind(v)
-		all_cards[v] = c
-		add_all_neighbors(v)
-	
-	for m in moved:
-		erase_neighbors(m)
+
+
+
 
 #change the value of the actions
 func increase(action, number):
@@ -524,11 +496,6 @@ func increase(action, number):
 		max_actions[active_player] += number
 	if action == "land":
 		max_land_plays[active_player] += number
-
-#func update_neighbours():
-#	neighbors = {}
-#	for c in all_cards:
-#		add_all_neighbors(c)
 	
 func addPlayers(name, name_list, spawns):
 	player_name = name
@@ -552,19 +519,7 @@ func addPlayers(name, name_list, spawns):
 	
 	
 	
-#redraw constantly
-func _process(delta):
-	get_node("CanvasLayer/gather").set_text(str(gather))
-	#update_neighbours()
-	update()
 
-
-	
-#draw red hex for each neighbor/empty tiles
-func _draw():
-	var c = Color(1.0, 0.0, 0.0)
-	for key in neighbors:
-		draw_Hex(ind_to_coord(key), c)
 
 #drawing a red hex
 func draw_Hex(coord, color):
@@ -577,3 +532,10 @@ func draw_Hex(coord, color):
 		c.push_back(color)
 
 	draw_polygon(points_hex, c)
+	
+	
+	#TODO: fix unique id/active_player
+func set_active_player(player):
+	active_player = player
+	is_active_player = (active_player+1 == get_tree().get_network_unique_id())
+	print("is this the active player: " + str(is_active_player))

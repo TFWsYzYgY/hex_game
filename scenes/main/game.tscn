@@ -1,25 +1,31 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://scripts/Grid.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Card_Blank.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scripts/camera.gd" type="Script" id=3]
-[ext_resource path="res://scripts/HUD.gd" type="Script" id=4]
-[ext_resource path="res://scripts/label_gather.gd" type="Script" id=5]
-[ext_resource path="res://assets/images/Hexagon_Tiles/Fire.png" type="Texture" id=6]
-[ext_resource path="res://scripts/CardBttns/Lava.gd" type="Script" id=7]
-[ext_resource path="res://assets/images/Hexagon_Tiles/Grass.png" type="Texture" id=8]
-[ext_resource path="res://scripts/CardBttns/Grass.gd" type="Script" id=9]
-[ext_resource path="res://assets/images/Hexagon_Tiles/Forest.png" type="Texture" id=10]
-[ext_resource path="res://scripts/CardBttns/Forest.gd" type="Script" id=11]
-[ext_resource path="res://assets/images/Hexagon_Tiles/ForestPath.png" type="Texture" id=12]
-[ext_resource path="res://scripts/CardBttns/Road.gd" type="Script" id=13]
-[ext_resource path="res://assets/images/Hexagon_Tiles/Mountain.png" type="Texture" id=14]
-[ext_resource path="res://scripts/CardBttns/Stones.gd" type="Script" id=15]
-[ext_resource path="res://assets/images/Hexagon_Tiles/Water.png" type="Texture" id=16]
-[ext_resource path="res://scripts/CardBttns/Water.gd" type="Script" id=17]
-[ext_resource path="res://assets/images/Hexagon_Tiles/SandQuick.png" type="Texture" id=18]
-[ext_resource path="res://scripts/CardBttns/Haunted.gd" type="Script" id=19]
-[ext_resource path="res://assets/images/background.png" type="Texture" id=20]
+[ext_resource path="res://scripts/board.gd" type="Script" id=4]
+[ext_resource path="res://assets/images/background.png" type="Texture" id=5]
+[ext_resource path="res://scripts/HUD.gd" type="Script" id=6]
+[ext_resource path="res://scripts/label_gather.gd" type="Script" id=7]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Fire.png" type="Texture" id=8]
+[ext_resource path="res://scripts/CardBttns/Lava.gd" type="Script" id=9]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Grass.png" type="Texture" id=10]
+[ext_resource path="res://scripts/CardBttns/Grass.gd" type="Script" id=11]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Forest.png" type="Texture" id=12]
+[ext_resource path="res://scripts/CardBttns/Forest.gd" type="Script" id=13]
+[ext_resource path="res://assets/images/Hexagon_Tiles/ForestPath.png" type="Texture" id=14]
+[ext_resource path="res://scripts/CardBttns/Road.gd" type="Script" id=15]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Mountain.png" type="Texture" id=16]
+[ext_resource path="res://scripts/CardBttns/Stones.gd" type="Script" id=17]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Water.png" type="Texture" id=18]
+[ext_resource path="res://scripts/CardBttns/Water.gd" type="Script" id=19]
+[ext_resource path="res://assets/images/Hexagon_Tiles/SandQuick.png" type="Texture" id=20]
+[ext_resource path="res://scripts/CardBttns/Haunted.gd" type="Script" id=21]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 512, 300 )
 
 [node name="main" type="Node2D"]
 
@@ -50,13 +56,35 @@ editor_draw_limits = false
 editor_draw_drag_margin = false
 script = ExtResource( 3 )
 
+[node name="Area2D" type="Area2D" parent="."]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 4 )
+_sections_unfolded = [ "Pickable" ]
+
+[node name="background" type="Sprite" parent="Area2D"]
+
+texture = ExtResource( 5 )
+_sections_unfolded = [ "Offset", "Transform", "Visibility" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+
+shape = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
-script = ExtResource( 4 )
+script = ExtResource( 6 )
 
 [node name="gather" type="Label" parent="CanvasLayer"]
 
@@ -74,7 +102,7 @@ text = "0"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-script = ExtResource( 5 )
+script = ExtResource( 7 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer"]
 
@@ -113,8 +141,8 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 6 )
-script = ExtResource( 7 )
+texture_normal = ExtResource( 8 )
+script = ExtResource( 9 )
 _sections_unfolded = [ "Rect", "Textures" ]
 
 [node name="Bttn_Grass" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
@@ -133,8 +161,8 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 8 )
-script = ExtResource( 9 )
+texture_normal = ExtResource( 10 )
+script = ExtResource( 11 )
 
 [node name="Bttn_Forest" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
 "butt",
@@ -152,8 +180,8 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 10 )
-script = ExtResource( 11 )
+texture_normal = ExtResource( 12 )
+script = ExtResource( 13 )
 
 [node name="Bttn_Road" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
 "butt",
@@ -171,8 +199,8 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 12 )
-script = ExtResource( 13 )
+texture_normal = ExtResource( 14 )
+script = ExtResource( 15 )
 
 [node name="Bttn_Stones" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
 "butt",
@@ -190,8 +218,8 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 14 )
-script = ExtResource( 15 )
+texture_normal = ExtResource( 16 )
+script = ExtResource( 17 )
 
 [node name="Bttn_Water" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
 "butt",
@@ -209,8 +237,8 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 16 )
-script = ExtResource( 17 )
+texture_normal = ExtResource( 18 )
+script = ExtResource( 19 )
 
 [node name="Bttn_Template" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
 "butt",
@@ -228,8 +256,8 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 18 )
-script = ExtResource( 19 )
+texture_normal = ExtResource( 20 )
+script = ExtResource( 21 )
 
 [node name="Panel_score" type="Panel" parent="CanvasLayer"]
 
@@ -549,11 +577,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="background" type="Sprite" parent="."]
-
-visible = false
-texture = ExtResource( 20 )
-_sections_unfolded = [ "Offset" ]
+[connection signal="input_event" from="Area2D" to="Area2D" method="_on_Area2D_input_event"]
 
 [connection signal="pressed" from="CanvasLayer/Panel_score/HBoxContainer/bttn_pass" to="." method="_on_bttn_pass_pressed"]
 
