@@ -8,7 +8,8 @@
 
 script = ExtResource( 2 )
 name = "Card_Beach"
-units = 1
+start_units = 1
+text = null
 
 [node name="Bild" parent="."]
 

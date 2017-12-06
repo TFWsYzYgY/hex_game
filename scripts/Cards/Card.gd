@@ -1,19 +1,28 @@
 extends Area2D
 
 export (String) var name
-export (int) var units
+export (int) var start_units
+export (String) var text
+
 var owner = null
 var needs_direction = false
 var overwrite = false
 var fast = 1
+var units = Vector2(0,0)
 
 var v1 = Vector2(110, 0)
 var v2 = Vector2(55, 96)
 
 
 func _ready():
-	if name != "Blank":
-		get_node("Panel/Label_units").set_text(str(units))
+	if text != null:
+		get_node("Node2D/Panel2/Text").set_text(text)
+
+func text():
+	if get_node("Node2D/Panel2").is_visible():
+		get_node("Node2D/Panel2").hide()
+	else:
+		get_node("Node2D/Panel2").show()
 
 #swap the coordinatesystem
 func coord_to_ind(pos):
@@ -38,22 +47,25 @@ func add_units(n, player):
 	print(owner)
 	
 	if player == owner:
-		units += n
+		units[owner] += n
 	else:
-		units -= n
-		if units < 0:
-			units = abs(units)
+		units[owner] -= n
+		var numb = units[owner]
+		if numb < 0:
+			units[owner] = 0
 			owner = player
-			
-	set_teamcolor()
-	get_node("Panel/Label_units").set_text(str(units))
+			units[player] = abs(numb)
+		if numb == 0:
+			owner = -1
+	
+	update_units()
 	
 	
 func get_owner():
 	return owner
 	
-func get_units():
-	return units
+func get_units(player):
+	return units[player]
 	
 func get_overwrite():
 	return overwrite
@@ -61,19 +73,22 @@ func get_overwrite():
 func get_name():
 	return name
 	
-func set_teamcolor():
-	if units == 0:
-		owner = -1
-	if owner == -1:
-		get_node("Panel/Label_units").set("custom_colors/font_color", Color(1,1,1))
-	if owner == 0:
-		get_node("Panel/Label_units").set("custom_colors/font_color", Color(1,0,0))
-	if owner == 1:
-		get_node("Panel/Label_units").set("custom_colors/font_color", Color(0,1,1))
+func update_units():
+	get_node("panel_units_p1/units_p1").set_text(str(units[0]))
+	get_node("panel_units_p2/units_p2").set_text(str(units[1]))
 
 func entering(player):
 	owner = player
-	set_teamcolor()
+	get_node("panel_units_p1/units_p1").set("custom_colors/font_color", Color(1,0,1))
+	get_node("panel_units_p2/units_p2").set("custom_colors/font_color", Color(0,1,1))
+	
+	
+	if start_units == 0:
+		owner = -1
+	else:
+		units[owner] = start_units
+	
+	update_units()
 	
 func get_fast():
 	return fast

@@ -8,14 +8,11 @@
 
 script = ExtResource( 2 )
 name = "Stones"
-units = 4
+start_units = 0
+text = "stein auf stein noch ein bein nimm schwarzen stein dann wird er fein"
 
 [node name="Bild" parent="."]
 
 texture = ExtResource( 3 )
-
-[node name="Label_units" parent="Panel"]
-
-text = "4"
 
 

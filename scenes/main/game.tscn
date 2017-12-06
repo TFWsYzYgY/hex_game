@@ -56,7 +56,12 @@ editor_draw_limits = false
 editor_draw_drag_margin = false
 script = ExtResource( 3 )
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Node2D" type="Node2D" parent="."]
+
+z = -1
+_sections_unfolded = [ "Z" ]
+
+[node name="Area2D" type="Area2D" parent="Node2D"]
 
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -68,12 +73,12 @@ audio_bus_name = "Master"
 script = ExtResource( 4 )
 _sections_unfolded = [ "Pickable" ]
 
-[node name="background" type="Sprite" parent="Area2D"]
+[node name="background" type="Sprite" parent="Node2D/Area2D"]
 
 texture = ExtResource( 5 )
 _sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Area2D"]
 
 shape = SubResource( 1 )
 _sections_unfolded = [ "Transform" ]
@@ -104,34 +109,47 @@ lines_skipped = 0
 max_lines_visible = -1
 script = ExtResource( 7 )
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer"]
+[node name="PanelUI" type="Panel" parent="CanvasLayer"]
+
+margin_right = 1024.0
+margin_bottom = 128.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Margin", "Material", "Rect", "Visibility" ]
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/PanelUI"]
 
 anchor_right = 1
-margin_bottom = 140.0
+margin_bottom = 128.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal = true
 scroll_vertical = false
+_sections_unfolded = [ "Rect", "Scroll" ]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ScrollContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelUI/ScrollContainer"]
 
 margin_right = 1024.0
-margin_bottom = 140.0
+margin_bottom = 128.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 0
+_sections_unfolded = [ "Rect" ]
 
-[node name="Bttn_Lava" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+[node name="Bttn_Lava" type="TextureButton" parent="CanvasLayer/PanelUI/ScrollContainer/HBoxContainer" groups=[
 "butt",
 ]]
 
 margin_right = 142.0
-margin_bottom = 140.0
+margin_bottom = 128.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -145,13 +163,13 @@ texture_normal = ExtResource( 8 )
 script = ExtResource( 9 )
 _sections_unfolded = [ "Rect", "Textures" ]
 
-[node name="Bttn_Grass" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+[node name="Bttn_Grass" type="TextureButton" parent="CanvasLayer/PanelUI/ScrollContainer/HBoxContainer" groups=[
 "butt",
 ]]
 
 margin_left = 146.0
 margin_right = 288.0
-margin_bottom = 140.0
+margin_bottom = 128.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -164,13 +182,13 @@ group = null
 texture_normal = ExtResource( 10 )
 script = ExtResource( 11 )
 
-[node name="Bttn_Forest" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+[node name="Bttn_Forest" type="TextureButton" parent="CanvasLayer/PanelUI/ScrollContainer/HBoxContainer" groups=[
 "butt",
 ]]
 
 margin_left = 292.0
 margin_right = 434.0
-margin_bottom = 140.0
+margin_bottom = 128.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -183,13 +201,13 @@ group = null
 texture_normal = ExtResource( 12 )
 script = ExtResource( 13 )
 
-[node name="Bttn_Road" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+[node name="Bttn_Road" type="TextureButton" parent="CanvasLayer/PanelUI/ScrollContainer/HBoxContainer" groups=[
 "butt",
 ]]
 
 margin_left = 438.0
 margin_right = 580.0
-margin_bottom = 140.0
+margin_bottom = 128.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -202,13 +220,13 @@ group = null
 texture_normal = ExtResource( 14 )
 script = ExtResource( 15 )
 
-[node name="Bttn_Stones" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+[node name="Bttn_Stones" type="TextureButton" parent="CanvasLayer/PanelUI/ScrollContainer/HBoxContainer" groups=[
 "butt",
 ]]
 
 margin_left = 584.0
 margin_right = 726.0
-margin_bottom = 140.0
+margin_bottom = 128.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -221,13 +239,13 @@ group = null
 texture_normal = ExtResource( 16 )
 script = ExtResource( 17 )
 
-[node name="Bttn_Water" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+[node name="Bttn_Water" type="TextureButton" parent="CanvasLayer/PanelUI/ScrollContainer/HBoxContainer" groups=[
 "butt",
 ]]
 
 margin_left = 730.0
 margin_right = 872.0
-margin_bottom = 140.0
+margin_bottom = 128.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -240,13 +258,13 @@ group = null
 texture_normal = ExtResource( 18 )
 script = ExtResource( 19 )
 
-[node name="Bttn_Template" type="TextureButton" parent="CanvasLayer/ScrollContainer/HBoxContainer" groups=[
+[node name="Bttn_Template" type="TextureButton" parent="CanvasLayer/PanelUI/ScrollContainer/HBoxContainer" groups=[
 "butt",
 ]]
 
 margin_left = 876.0
 margin_right = 1024.0
-margin_bottom = 140.0
+margin_bottom = 128.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -271,6 +289,7 @@ rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+_sections_unfolded = [ "Hint" ]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel_score"]
 
@@ -300,6 +319,7 @@ shortcut = null
 group = null
 text = "Pass Turn"
 flat = false
+_sections_unfolded = [ "Hint" ]
 
 [node name="vbox1" type="VBoxContainer" parent="CanvasLayer/Panel_score/HBoxContainer"]
 
@@ -316,7 +336,7 @@ alignment = 0
 [node name="Label_player1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
 
 margin_right = 201.0
-margin_bottom = 22.0
+margin_bottom = 30.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -329,9 +349,9 @@ max_lines_visible = -1
 
 [node name="Label_lands1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
 
-margin_top = 26.0
+margin_top = 34.0
 margin_right = 201.0
-margin_bottom = 48.0
+margin_bottom = 64.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -344,22 +364,7 @@ max_lines_visible = -1
 
 [node name="Label_moves1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
 
-margin_top = 52.0
-margin_right = 201.0
-margin_bottom = 74.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "available moves"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label_actions1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
-
-margin_top = 78.0
+margin_top = 68.0
 margin_right = 201.0
 margin_bottom = 100.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -367,7 +372,7 @@ rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "available total actions"
+text = "available moves"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -387,7 +392,7 @@ alignment = 0
 [node name="Label_points1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
 
 margin_right = 201.0
-margin_bottom = 22.0
+margin_bottom = 30.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -399,9 +404,9 @@ max_lines_visible = -1
 
 [node name="Label_lands1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
 
-margin_top = 26.0
+margin_top = 34.0
 margin_right = 201.0
-margin_bottom = 48.0
+margin_bottom = 64.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -413,21 +418,7 @@ max_lines_visible = -1
 
 [node name="Label_moves1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
 
-margin_top = 52.0
-margin_right = 201.0
-margin_bottom = 74.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label_actions1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
-
-margin_top = 78.0
+margin_top = 68.0
 margin_right = 201.0
 margin_bottom = 100.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -454,7 +445,7 @@ alignment = 0
 [node name="Label_player2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
 
 margin_right = 201.0
-margin_bottom = 22.0
+margin_bottom = 30.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -467,9 +458,9 @@ max_lines_visible = -1
 
 [node name="Label_lands2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
 
-margin_top = 26.0
+margin_top = 34.0
 margin_right = 201.0
-margin_bottom = 48.0
+margin_bottom = 64.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -482,22 +473,7 @@ max_lines_visible = -1
 
 [node name="Label_moves2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
 
-margin_top = 52.0
-margin_right = 201.0
-margin_bottom = 74.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "available moves"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label_actions2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
-
-margin_top = 78.0
+margin_top = 68.0
 margin_right = 201.0
 margin_bottom = 100.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -505,7 +481,7 @@ rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "available total actions"
+text = "available moves"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -525,7 +501,7 @@ alignment = 0
 [node name="Label_points2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
 
 margin_right = 204.0
-margin_bottom = 22.0
+margin_bottom = 30.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -537,9 +513,9 @@ max_lines_visible = -1
 
 [node name="Label_lands2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
 
-margin_top = 26.0
+margin_top = 34.0
 margin_right = 204.0
-margin_bottom = 48.0
+margin_bottom = 64.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -551,21 +527,7 @@ max_lines_visible = -1
 
 [node name="Label_moves2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
 
-margin_top = 52.0
-margin_right = 204.0
-margin_bottom = 74.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label_actions2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
-
-margin_top = 78.0
+margin_top = 68.0
 margin_right = 204.0
 margin_bottom = 100.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -577,7 +539,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[connection signal="input_event" from="Area2D" to="Area2D" method="_on_Area2D_input_event"]
+[connection signal="input_event" from="Node2D/Area2D" to="Node2D/Area2D" method="_on_Area2D_input_event"]
 
 [connection signal="pressed" from="CanvasLayer/Panel_score/HBoxContainer/bttn_pass" to="." method="_on_bttn_pass_pressed"]
 

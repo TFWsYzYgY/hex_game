@@ -14,10 +14,9 @@ func coord_to_ind(pos):
 	
 func _on_Area2D_input_event(viewport, event, shape_idx ):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
-		print("pressed")
-		print(get_global_mouse_position())
 		var m = get_tree().get_root().get_node("main")
-		var ind = coord_to_ind(get_global_mouse_position())
-		print("Blank Click index: "+ str(ind))
-		#m.add_card(get_ind(), true)
-		m.rpc("add_card", ind, true)
+		if m.is_active():
+			
+			var ind = coord_to_ind(get_global_mouse_position())
+			print("Board Click index: "+ str(ind))
+			m.rpc("add_card", ind, true, m.get_card_path())

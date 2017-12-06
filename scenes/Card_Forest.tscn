@@ -9,7 +9,8 @@
 
 script = ExtResource( 2 )
 name = "Forest"
-units = 1
+start_units = 2
+text = null
 
 [node name="Bild" parent="."]
 
@@ -18,9 +19,5 @@ texture = ExtResource( 3 )
 [node name="overlay" type="Sprite" parent="."]
 
 texture = ExtResource( 4 )
-
-[node name="Label_units" parent="Panel"]
-
-text = "5"
 
 

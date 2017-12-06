@@ -1,7 +1,5 @@
 config_version=3
 
-config_version=null
-
 [application]
 
 config/name="hex_game"
@@ -11,10 +9,6 @@ config/icon="res://icon.png"
 [autoload]
 
 gamestate="*res://scripts/gamestate.gd"
-
-[debug]
-
-settings/stdout/print_fps=true
 
 [rendering]
 
