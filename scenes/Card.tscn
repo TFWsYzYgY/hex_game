@@ -84,7 +84,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Hint" ]
 
-[node name="def_panel" type="Panel" parent="."]
+[node name="panel_cover" type="Panel" parent="."]
 
 margin_left = -12.0
 margin_top = 23.0
@@ -97,7 +97,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 _sections_unfolded = [ "Hint", "Mouse" ]
 
-[node name="defense" type="Label" parent="def_panel"]
+[node name="cover" type="Label" parent="panel_cover"]
 
 margin_right = 24.0
 margin_bottom = 33.0

@@ -10,6 +10,8 @@ script = ExtResource( 2 )
 name = "Center"
 start_units = 0
 text = "This is the Center card. Cannot be overwritten or destroyed."
+start_cover = 0
+base_cover = 0
 
 [node name="Bild" parent="."]
 

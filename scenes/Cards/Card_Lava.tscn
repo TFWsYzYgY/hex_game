@@ -10,6 +10,8 @@ script = ExtResource( 2 )
 name = "Lava"
 start_units = 2
 text = "lawwwa"
+start_cover = 2
+base_cover = 1
 
 [node name="Bild" parent="."]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://scripts/Grid.gd" type="Script" id=1]
-[ext_resource path="res://scenes/Card_Blank.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Cards/Card_Blank.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scripts/camera.gd" type="Script" id=3]
 [ext_resource path="res://scripts/board.gd" type="Script" id=4]
 [ext_resource path="res://assets/images/background.png" type="Texture" id=5]
@@ -115,10 +115,12 @@ margin_right = 1024.0
 margin_bottom = 128.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
+hint_tooltip = "HUHUHUHUHHU
+"
 mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-_sections_unfolded = [ "Margin", "Material", "Rect", "Visibility" ]
+_sections_unfolded = [ "Hint", "Margin", "Material", "Rect", "Visibility" ]
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/PanelUI"]
 
@@ -135,7 +137,7 @@ _sections_unfolded = [ "Rect", "Scroll" ]
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelUI/ScrollContainer"]
 
 margin_right = 1024.0
-margin_bottom = 128.0
+margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -149,7 +151,7 @@ _sections_unfolded = [ "Rect" ]
 ]]
 
 margin_right = 142.0
-margin_bottom = 128.0
+margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -169,7 +171,7 @@ _sections_unfolded = [ "Rect", "Textures" ]
 
 margin_left = 146.0
 margin_right = 288.0
-margin_bottom = 128.0
+margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -188,7 +190,7 @@ script = ExtResource( 11 )
 
 margin_left = 292.0
 margin_right = 434.0
-margin_bottom = 128.0
+margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -207,7 +209,7 @@ script = ExtResource( 13 )
 
 margin_left = 438.0
 margin_right = 580.0
-margin_bottom = 128.0
+margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -226,7 +228,7 @@ script = ExtResource( 15 )
 
 margin_left = 584.0
 margin_right = 726.0
-margin_bottom = 128.0
+margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -245,7 +247,7 @@ script = ExtResource( 17 )
 
 margin_left = 730.0
 margin_right = 872.0
-margin_bottom = 128.0
+margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -264,7 +266,7 @@ script = ExtResource( 19 )
 
 margin_left = 876.0
 margin_right = 1024.0
-margin_bottom = 128.0
+margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -336,7 +338,7 @@ alignment = 0
 [node name="Label_player1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
 
 margin_right = 201.0
-margin_bottom = 30.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -349,9 +351,9 @@ max_lines_visible = -1
 
 [node name="Label_lands1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
 
-margin_top = 34.0
+margin_top = 28.0
 margin_right = 201.0
-margin_bottom = 64.0
+margin_bottom = 52.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -364,15 +366,30 @@ max_lines_visible = -1
 
 [node name="Label_moves1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
 
-margin_top = 68.0
+margin_top = 56.0
 margin_right = 201.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "available moves"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_deck1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox1"]
+
+margin_top = 84.0
+margin_right = 201.0
+margin_bottom = 98.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Cards left in deck:"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -392,7 +409,7 @@ alignment = 0
 [node name="Label_points1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
 
 margin_right = 201.0
-margin_bottom = 30.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -404,9 +421,9 @@ max_lines_visible = -1
 
 [node name="Label_lands1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
 
-margin_top = 34.0
+margin_top = 28.0
 margin_right = 201.0
-margin_bottom = 64.0
+margin_bottom = 52.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -418,14 +435,28 @@ max_lines_visible = -1
 
 [node name="Label_moves1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
 
-margin_top = 68.0
+margin_top = 56.0
 margin_right = 201.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_deck1" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox2"]
+
+margin_top = 84.0
+margin_right = 201.0
+margin_bottom = 98.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -445,7 +476,7 @@ alignment = 0
 [node name="Label_player2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
 
 margin_right = 201.0
-margin_bottom = 30.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -458,9 +489,9 @@ max_lines_visible = -1
 
 [node name="Label_lands2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
 
-margin_top = 34.0
+margin_top = 28.0
 margin_right = 201.0
-margin_bottom = 64.0
+margin_bottom = 52.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -473,15 +504,30 @@ max_lines_visible = -1
 
 [node name="Label_moves2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
 
-margin_top = 68.0
+margin_top = 56.0
 margin_right = 201.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "available moves"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_deck2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox3"]
+
+margin_top = 84.0
+margin_right = 201.0
+margin_bottom = 98.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Cards left in deck:"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -501,7 +547,7 @@ alignment = 0
 [node name="Label_points2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
 
 margin_right = 204.0
-margin_bottom = 30.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -513,9 +559,9 @@ max_lines_visible = -1
 
 [node name="Label_lands2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
 
-margin_top = 34.0
+margin_top = 28.0
 margin_right = 204.0
-margin_bottom = 64.0
+margin_bottom = 52.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -527,14 +573,28 @@ max_lines_visible = -1
 
 [node name="Label_moves2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
 
-margin_top = 68.0
+margin_top = 56.0
 margin_right = 204.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label_deck2" type="Label" parent="CanvasLayer/Panel_score/HBoxContainer/vbox4"]
+
+margin_top = 84.0
+margin_right = 204.0
+margin_bottom = 98.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1

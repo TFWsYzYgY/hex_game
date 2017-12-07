@@ -8,8 +8,10 @@
 
 script = ExtResource( 2 )
 name = "Stones"
-start_units = 0
+start_units = 5
 text = "stein auf stein noch ein bein nimm schwarzen stein dann wird er fein"
+start_cover = 1
+base_cover = null
 
 [node name="Bild" parent="."]
 

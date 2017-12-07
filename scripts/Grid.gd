@@ -1,4 +1,6 @@
 extends Node2D
+#TODO: BUG: cant move units if clicked on tile after using all land actions
+#RPC update label etc
 
 export (PackedScene) var card
 
@@ -27,16 +29,19 @@ var max_moves = [2, 2]
 #TODO reduce land_plays to normal value
 var land_plays = [3,3]
 var moves = [2, 2]
+var decksizes = [30, 30]
 
 var dist = 1
 
 var v1 = Vector2(110, 0)
 var v2 = Vector2(55, 96)
 
-var random_unified_deck = ["Beach", "Lava", "Village", "Stones",
-"Forest", "Grass", "Haunted", "Water", "Road"]#"Waste" , TODO: make sure card underneath is really deleted not remaining underneath
+#var random_unified_deck = ["Beach", "Lava", "Village", "Stones",
+#"Forest", "Grass", "Haunted", "Water", "Road"]#"Waste" , TODO: make sure card underneath is really deleted not remaining underneath
+var deck = []
 
-var hand_size = 0
+var start_hand_size = 5
+var curr_hand_size = 0
 var max_hand_size = 5
 
 var directions = { "east" : Vector2(1,0),
@@ -67,7 +72,6 @@ func ind_to_coord(pos):
 	return pos.x*v1 + pos.y*v2
 
 func _get_tooltip(viewport, event, shape_idx, card):
-	
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == BUTTON_RIGHT :
 			card.text()
@@ -84,30 +88,7 @@ func _get_tooltip(viewport, event, shape_idx, card):
 					("trying to place")
 					place(card)
 
-func _ready():
-	randomize()
-	#var gs = get_node("/root/gamestate")
-	
-	#initializing gamestate
-	set_active_player(starting_player)
-	
-	print("Turn: ", turn)
-	print("Current player is: ", int(active_player))
-	
-	#lower UI
-	update_label()
-	
-	#creating center
-	card_path = str("res://scenes/Card_Center.tscn")
-	add_card(Vector2(0,0), false, card_path)
-	
-	#creating upper UI/hand
-	#draw_card_from_deck()
-	#draw_card_from_deck()
-	
-	for button in get_tree().get_nodes_in_group("butt"):
-		button.connect("pressed", self, "_ui_button_pressed", [button])
-		
+func _ready():		
 	set_process(true)
 	
 func _get_active_player():
@@ -115,7 +96,6 @@ func _get_active_player():
 	
 #redraw constantly
 func _process(delta):
-	get_node("CanvasLayer/gather").set_text(str(gather))
 	update()
 	
 #draw red hex for each neighbor/empty tiles
@@ -130,38 +110,39 @@ func _draw():
 #minus 1 bc unique id starts at 1
 func _on_bttn_pass_pressed():
 	
-	draw_card_from_deck()
-	print("buttontotnotnot")
+	if is_active():
+		draw_card_from_deck()
+		
+		land_plays[active_player] = max_land_plays[active_player]
+		moves[active_player] = max_moves[active_player]
 	
-	land_plays[active_player] = max_land_plays[active_player]
-	moves[active_player] = max_moves[active_player]
-
-	rpc("update_label")
-	rpc("swap_active_player")
+		rpc("update_label")
+		rpc("swap_active_player")
 
 func _ui_button_pressed(button):
 	print(button.name)
 	print(button.get_name())
-	card_path = str("res://scenes/", button.name, ".tscn")
+	card_path = str("res://scenes/Cards/", button.name, ".tscn")
 	
 	
 func add_bttn_to_hand(card_name):
-	# Load new scene
 	print("Adding card to hand: " + card_name)
 	var s = ResourceLoader.load("res://scenes/Texturebutton.tscn")
 	var button = s.instance()
-	button.name = "Card_" + card_name
-	button.texture_normal = load("res://assets/images/Hexagon_Tiles/" + card_name+ ".png")
+	button.name = card_name
+	card_name.erase(0,5)
+	button.texture_normal = load("res://assets/images/Hexagon_Tiles/" + card_name + ".png")
 	get_node("CanvasLayer/PanelUI/ScrollContainer/HBoxContainer").add_child(button)
 	button.connect("pressed", self, "_ui_button_pressed", [button])
 
-
+#todo: check name_list, only other players?
+#spawns is id:playernumber
 func addPlayers(name, name_list, spawns):
 	player_name = name
 	players = name_list
 	player_spawns = spawns
+
 	
-	print(player_spawns)
 	
 	for p_id in player_spawns:
 		if p_id == 1:
@@ -175,7 +156,10 @@ func addPlayers(name, name_list, spawns):
 				get_node("CanvasLayer/Panel_score/HBoxContainer/vbox3/Label_player2").text = player_name
 			else:
 				get_node("CanvasLayer/Panel_score/HBoxContainer/vbox3/Label_player2").text = players[p_id]
-
+	
+func addDeck(array):
+	deck = array
+	
 func add_units_to_card(n, ind):
 	if ind in all_cards:
 		var k = all_cards[ind]
@@ -194,18 +178,14 @@ func add_units_half_circle(n, ind):
 func can_place(ind, card):
 	if card.get_name() == "Center":
 		return true
-	print(1)
 	if land_plays[active_player] <= 0:
 		return false
-	print(1)
 	if card.get_overwrite():
-		print(2)
 		if not ind in all_cards:
 			return false
 		if all_cards[ind].get_name() == "Center":
 			return false
 	else:
-		print(23)
 		if ind in all_cards:
 			return false
 		return has_neighbour(ind)
@@ -252,10 +232,11 @@ func draw_Hex(coord, color):
 	
 func draw_card_from_deck():
 	if is_active_player:
-		if hand_size < max_hand_size:
-			var s = get_random_card_from_deck()
-			add_bttn_to_hand(s)
-			hand_size += 1
+		if curr_hand_size < max_hand_size:
+			if deck.size() > 0:
+				var s = get_random_card_from_deck()
+				add_bttn_to_hand(s)
+				curr_hand_size += 1
 
 func gather(card):
 	print("Trying to gather units from tile...")
@@ -264,14 +245,17 @@ func gather(card):
 		gather_start = ind
 		all_cards[ind].add_units(-1, active_player)
 		gather += 1
-		print(str(active_player) + " gathered: ", str(gather))
+		print("active player: " + str(active_player) + " gathered: ", str(gather))
+		get_node("CanvasLayer/gather").set_text(str(gather))
 
 func get_card_path():
 	return card_path
 
 func get_random_card_from_deck():
-	var i = randi()%random_unified_deck.size()
-	return str(random_unified_deck[i])
+	var i = randi()%deck.size() 
+	var c = deck[i]
+	deck.remove(i)
+	return c
 	
 func has_neighbour(ind):
 	for d in directions:
@@ -286,6 +270,32 @@ func increase(action, number):
 
 	if action == "land":
 		max_land_plays[active_player] += number
+	
+func initialize():
+	randomize()
+	#var gs = get_node("/root/gamestate")
+	
+	print("Turn: ", turn)
+	print("Current player is: ", int(starting_player))
+	
+	#lower UI
+	update_label()
+	
+	#creating center
+	card_path = str("res://scenes/Cards/Card_Center.tscn")
+	add_card(Vector2(0,0), false, card_path)
+	
+	#creating upper UI/hand
+	#draw_card_from_deck()
+	#draw_card_from_deck()
+	
+	for button in get_tree().get_nodes_in_group("butt"):
+		button.connect("pressed", self, "_ui_button_pressed", [button])
+		
+	set_active_player(starting_player)
+	for i in max_hand_size:
+		draw_card_from_deck()
+	
 	
 func is_active():
 	return is_active_player
@@ -364,48 +374,47 @@ func path(ind1, ind2):
 	came_from[ind1] = null
 	cost_so_far[ind1] = 0
 	
-	print(".")
-	print("starting to path at: " + str(frontier[0]))
+	#print(".")
+	#print("starting to path at: " + str(frontier[0]))
 	
 	while not frontier.empty():
-		var current = null
+		var current = null	
 		
-		
-		for f in frontier:
-			print("frontier")
-			print(frontier[f])
-			print(f)
+		#for f in frontier:
+			#print("frontier")
+			#print(frontier[f])
+			#print(f)
 			
 		var val = null
 		for f in frontier:
-			print(f)
-			print(val)
+			#print(f)
+			#print(val)
 			
 			if val == null or f < val:
 				val = f
-				print("pathing value at: " + str(f))
-				print(frontier[f])
+				#print("pathing value at: " + str(f))
+				#print(frontier[f])
 				
-		print("deleting")
+		#print("deleting")
 		current = frontier[val]
 		frontier.erase(val)
 			
-		print("continuing")
+		#print("continuing")
 	
 		if current == ind2:
-			print("pathlength is: " + str(cost_so_far[current]))
+			#print("pathlength is: " + str(cost_so_far[current]))
 			return cost_so_far[current]
 		
 		for d in directions:
 			print(d)
 			var next = current + directions[d]
 			if next in all_cards:
-				print("found next tile in this direction")
+				#print("found next tile in this direction")
 				var new_cost = cost_so_far[current] + all_cards[next].get_fast()
-				print("updating the cost to: " + str(new_cost))
+				#print("updating the cost to: " + str(new_cost))
 				
 				if (not next in cost_so_far) or (new_cost < cost_so_far[next]):
-					print("inserting")
+					#print("inserting")
 					cost_so_far[next] = new_cost
 					var priority = new_cost + distance(ind2, next)
 					
@@ -420,23 +429,25 @@ func path(ind1, ind2):
 # chosing card should cancel gathering
 func place(card):
 	var ind = card.get_ind()
-	
-	#path(gather_start, ind)
-	
-	#path/distance
+
 	if gather > 0 and path(gather_start, ind) <= dist:
-		print("placing gathered units at: " + str(ind))
-		all_cards[ind].add_units(gather, active_player)
-		gather = 0
-		gather_start = null
-		moves[active_player] -= 1
+		rpc("placement", ind, gather, active_player)
 		rpc("update_label")
 	else:
 		print("unable to place")
 		all_cards[gather_start].add_units(gather, active_player)
 		gather = 0
 		gather_start = null
-		
+
+sync func placement(ind, amount, active_player):
+	print("placing gathered units at: " + str(ind))
+	all_cards[ind].add_units(amount, active_player)
+	gather = 0
+	gather_start = null
+	moves[active_player] -= 1
+	get_node("CanvasLayer/gather").set_text(str(gather))
+	
+	
 #method for entering cards
 #TODO: direction as input
 func push_last_tile_line(ind1):
@@ -466,8 +477,13 @@ func update_points():
 
 	#TODO: fix unique id/active_player
 func set_active_player(player):
+	for p in player_spawns:
+		#wenn die richtige playerid gefunden wurde
+		if player_spawns[p] == player:
+			#check if this is the player
+			is_active_player = (p == get_tree().get_network_unique_id())
+	
 	active_player = player
-	is_active_player = (active_player+1 == get_tree().get_network_unique_id())
 	print("is this the active player: " + str(is_active_player))
 
 #adding card to map
@@ -522,6 +538,10 @@ sync func update_label():
 	get_node(s + "vbox2/Label_lands1").set_text( str( land_plays[0])+"/"+str( max_land_plays[0]))
 	get_node(s + "vbox4/Label_lands2").set_text( str( land_plays[1])+"/"+str( max_land_plays[1]))
 	
+	get_node(s + "vbox2/Label_deck1").set_text(str(decksizes[0]))
+	get_node(s + "vbox4/Label_deck2").set_text(str(decksizes[1]))
+		
 	get_node(s + "vbox2/Label_moves1").set_text(str( moves[0])+"/"+str(max_moves[0]))
 	get_node(s + "vbox4/Label_moves2").set_text(str( moves[1])+"/"+str(max_moves[1]))
+
 	

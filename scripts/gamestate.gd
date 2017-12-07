@@ -15,6 +15,7 @@ var player_name = "The Warrior"
 # Names for remote players in id:name format
 var players = {}
 
+var deck = []
 
 var current_scene = null
 
@@ -111,7 +112,8 @@ func _deferred_goto_scene(path, player_spawns):
 	
 	current_scene.set_network_master(get_tree().get_network_unique_id())
 	current_scene.addPlayers(player_name, players, player_spawns)
-	
+	current_scene.addDeck(deck)
+	current_scene.initialize()
 	
 	print("size: " + str(players.size()))
 	print("Scene change finished")
@@ -159,6 +161,7 @@ func begin_game():
 		print("too many players on the server")
 		return
 	
+	#TODO: maybe reverse player_spawns to player number: id
 	var player_spawns = {}
 	player_spawns[1] = 0
 	
@@ -197,7 +200,8 @@ func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child( root.get_child_count() - 1 )
 	
-	
+func set_deck(array):
+	deck  = array
 	
 	
 	

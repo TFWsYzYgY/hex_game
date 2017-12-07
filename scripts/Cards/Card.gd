@@ -3,20 +3,34 @@ extends Area2D
 export (String) var name
 export (int) var start_units
 export (String) var text
+export (int) var start_cover
+export(int) var base_cover
 
 var owner = null
 var needs_direction = false
 var overwrite = false
 var fast = 1
 var units = Vector2(0,0)
+var curr_cover = 0
 
 var v1 = Vector2(110, 0)
 var v2 = Vector2(55, 96)
 
 
 func _ready():
-	if text != null:
-		get_node("Node2D/Panel2/Text").set_text(text)
+	if text == null:
+		text = "no card text available"
+	get_node("Node2D/Panel2/Text").set_text(text)
+	
+	#Default values if not imported differently
+	if start_cover == null:
+		start_cover = 0
+	if base_cover == null:
+		base_cover = 0
+	if name == null:
+		name = "Deafault Player"
+	if start_units == null:
+		start_units = 0
 
 func text():
 	if get_node("Node2D/Panel2").is_visible():
@@ -49,7 +63,7 @@ func add_units(n, player):
 	if player == owner:
 		units[owner] += n
 	else:
-		units[owner] -= n
+		units[owner] -= (n - curr_cover)
 		var numb = units[owner]
 		if numb < 0:
 			units[owner] = 0
@@ -77,6 +91,15 @@ func update_units():
 	get_node("panel_units_p1/units_p1").set_text(str(units[0]))
 	get_node("panel_units_p2/units_p2").set_text(str(units[1]))
 
+func update_cover():
+	get_node("panel_cover/cover").set_text(str(curr_cover))
+
+func update_cover_value():
+	if curr_cover > base_cover:
+			curr_cover -= 1
+	if curr_cover < base_cover:
+			curr_cover += 1
+			
 func entering(player):
 	owner = player
 	get_node("panel_units_p1/units_p1").set("custom_colors/font_color", Color(1,0,1))
@@ -88,7 +111,9 @@ func entering(player):
 	else:
 		units[owner] = start_units
 	
+	curr_cover = start_cover
 	update_units()
+	update_cover()
 	
 func get_fast():
 	return fast

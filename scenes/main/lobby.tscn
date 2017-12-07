@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/lobby.gd" type="Script" id=1]
+[ext_resource path="res://scripts/editor.gd" type="Script" id=2]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Grass.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Forest.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Stones.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Sand.png" type="Texture" id=6]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Water.png" type="Texture" id=7]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Lava.png" type="Texture" id=8]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Road.png" type="Texture" id=9]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Village.png" type="Texture" id=10]
+[ext_resource path="res://assets/images/Hexagon_Tiles/Haunted.png" type="Texture" id=11]
 
 [node name="lobby" type="Control"]
 
@@ -242,7 +252,6 @@ dialog_hide_on_ok = true
 
 [node name="editor" type="Panel" parent="."]
 
-visible = false
 margin_right = 1025.0
 margin_bottom = 599.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -250,21 +259,49 @@ rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource( 2 )
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="deccklist" type="ItemList" parent="editor"]
+[node name="Panel_Deck" type="PanelContainer" parent="editor"]
 
-margin_left = 152.0
+margin_left = 145.0
+margin_top = 143.0
+margin_right = 284.0
+margin_bottom = 448.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="Box_Deck" type="VBoxContainer" parent="editor/Panel_Deck"]
+
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 132.0
+margin_bottom = 298.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+
+[node name="cardlist" type="ItemList" parent="editor"]
+
+margin_left = 443.0
 margin_top = 119.0
-margin_right = 348.0
+margin_right = 639.0
 margin_bottom = 478.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-items = [  ]
+items = [ "Card_Grass", ExtResource( 3 ), false, "Card_Forest", ExtResource( 4 ), false, "Card_Stones", ExtResource( 5 ), false, "Card_Sand", ExtResource( 6 ), false, "Item 4", ExtResource( 7 ), false, "Card_Lava", ExtResource( 8 ), false, "Item 6", ExtResource( 9 ), false, "Card_Village", ExtResource( 10 ), false, "Item 8", ExtResource( 11 ), false ]
 select_mode = 0
 icon_mode = 1
+icon_scale = 0.5
+_sections_unfolded = [ "Columns", "Icon" ]
 
 [node name="deckname" type="Label" parent="editor"]
 
@@ -307,6 +344,8 @@ flat = false
 [connection signal="pressed" from="connect/join" to="." method="_on_join_pressed"]
 
 [connection signal="pressed" from="connect/deckeditor" to="." method="_on_deckeditor_pressed"]
+
+[connection signal="item_activated" from="editor/cardlist" to="editor" method="_on_cardlist_item_activated"]
 
 [connection signal="pressed" from="editor/back_to_menu" to="." method="_on_back_to_menu_pressed"]
 

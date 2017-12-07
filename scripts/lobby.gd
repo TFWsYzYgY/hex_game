@@ -8,17 +8,21 @@ func _ready():
 	gamestate.connect("player_list_changed", self, "refresh_lobby")
 	gamestate.connect("game_ended", self, "_on_game_ended")
 	gamestate.connect("game_error", self, "_on_game_error")
+	
+	
 
 func _on_host_pressed():
 	if (get_node("connect/name").text == ""):
 		get_node("connect/error_label").text="Invalid name!"
 		return
-
+	
 	get_node("connect").hide()
 	get_node("players").show()
 	get_node("connect/error_label").text=""
 
 	var name = get_node("connect/name").text
+	
+	gamestate.set_deck(load_deck())
 	gamestate.host_game(name)
 	refresh_lobby()
 
@@ -40,6 +44,7 @@ func _on_join_pressed():
 	get_node("connect/join").disabled=true
 
 	var name = get_node("connect/name").text
+	gamestate.set_deck(load_deck())
 	gamestate.join_game(ip, name)
 	# refresh_lobby() gets called by the player_list_changed signal
 
@@ -78,14 +83,54 @@ func _on_start_pressed():
 
 
 func _on_deckeditor_pressed():
+	var deck = load_deck()
 
+	for card in deck:
+		var l = Label.new()
+		l.set_text(card)
+		l.set_name(card)
+		get_node("editor/Panel_Deck/Box_Deck").add_child(l)
+		
 	get_node("connect").hide()
 	get_node("editor").show()
 	get_node("connect/error_label").text=""
 
 
-
 func _on_back_to_menu_pressed():
-	
+	save_deck()
 	get_node("editor").hide()
 	get_node("connect").show()
+	
+
+func save_deck():
+	var savegame = File.new()
+	savegame.open("user://savedeck.save", File.WRITE)
+	
+	var box = get_node("editor/Panel_Deck/Box_Deck")
+
+	for l in box.get_children():
+		savegame.store_line(to_json(l.get_name()))
+		box.remove_child(l)
+		l.queue_free()
+		
+	savegame.close()
+	
+	
+# Note: This can be called from anywhere inside the tree.  This function is path independent.
+func load_deck():
+	var savegame = File.new()
+	var deck = []
+	
+	if !savegame.file_exists("user://savedeck.save"):
+		return deck
+
+	savegame.open("user://savedeck.save", File.READ)
+	#30 bc arbitrary max deck
+	while !savegame.eof_reached():
+		var line = parse_json(savegame.get_line())
+		if line != null:
+			deck.append(line)
+	
+	savegame.close()
+	
+	return deck

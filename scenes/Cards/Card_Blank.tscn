@@ -18,7 +18,10 @@ audio_bus_override = false
 audio_bus_name = "Master"
 script = ExtResource( 1 )
 name = "Blank"
-units = null
+start_units = null
+text = "Null"
+start_cover = 0
+base_cover = 0
 
 [node name="Bild" type="Sprite" parent="."]
 
